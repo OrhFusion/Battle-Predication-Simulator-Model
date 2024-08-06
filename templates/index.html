@@ -1,0 +1,370 @@
+<html><head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Epic Superhero Battle Simulator</title><style>
+    :root {
+        --background: #1e1e2e;
+        --text: #cdd6f4;
+        --primary: #89b4fa;
+        --secondary: #a6e3a1;
+        --accent: #f38ba8;
+        --card-bg: #313244;
+        --border: #45475a;
+    }
+
+    .light-mode {
+        --background: #eff1f5;
+        --text: #4c4f69;
+        --primary: #1e66f5;
+        --secondary: #40a02b;
+        --accent: #d20f39;
+        --card-bg: #e6e9ef;
+        --border: #bcc0cc;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--background);
+        color: var(--text);
+        transition: background-color 0.3s, color 0.3s;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+    }
+
+    h1 {
+        text-align: center;
+        color: var(--primary);
+        font-size: 2.5em;
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 1;
+        text-shadow: 0 0 10px var(--primary);
+    }
+
+    .card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            to bottom right,
+            rgba(137, 180, 250, 0.1),
+            rgba(166, 227, 161, 0.1)
+        );
+        transform: rotate(45deg);
+        z-index: 0;
+        animation: cardShimmer 6s linear infinite;
+    }
+
+    @keyframes cardShimmer {
+        0% {
+            transform: translateX(-50%) rotate(45deg);
+        }
+        100% {
+            transform: translateX(50%) rotate(45deg);
+        }
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: var(--primary);
+    }
+
+    select, button {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        background-color: var(--card-bg);
+        color: var(--text);
+        font-size: 16px;
+        position: relative;
+        z-index: 1;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    select:focus, button:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.3);
+    }
+
+    button {
+        background-color: var(--secondary);
+        color: var(--background);
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    button:hover {
+        background-color: var(--primary);
+        transform: translateY(-2px);
+    }
+
+    #hero-avatar {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 20px;
+        border: 3px solid var(--primary);
+        border-radius: 50%;
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.3s;
+    }
+
+    #hero-avatar:hover {
+        transform: scale(1.1);
+    }
+
+    #hero-avatar svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    #prediction-text {
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        margin-top: 20px;
+        color: var(--accent);
+    }
+
+    .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: var(--primary);
+        color: var(--background);
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        z-index: 10;
+    }
+
+    .theme-toggle:hover {
+        background-color: var(--secondary);
+        transform: rotate(180deg);
+    }
+
+    .parallel-effect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .parallel-line {
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background-color: var(--primary);
+        opacity: 0.1;
+        animation: parallelMove 10s linear infinite;
+    }
+
+    @keyframes parallelMove {
+        0% {
+            transform: translateY(-100%);
+        }
+        100% {
+            transform: translateY(100%);
+        }
+    }
+
+    .hero-icon {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    @media (max-width: 600px) {
+        .container {
+            padding: 10px;
+        }
+        
+        h1 {
+            font-size: 2em;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="parallel-effect">
+        <div class="parallel-line" style="animation-delay: 0s;"></div>
+        <div class="parallel-line" style="animation-delay: 2s;"></div>
+        <div class="parallel-line" style="animation-delay: 4s;"></div>
+        <div class="parallel-line" style="animation-delay: 6s;"></div>
+        <div class="parallel-line" style="animation-delay: 8s;"></div>
+    </div>
+    <div class="container">
+        <h1>Epic Superhero Battle Simulator</h1>
+        <div class="card">
+            <form id="battle-form" action="{{ url_for('index') }}" method="post">
+                <div id="hero-avatar">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="50" fill="var(--primary)" />
+                        <text x="50" y="60" font-family="Poppins" font-size="40" fill="var(--background)" text-anchor="middle">?</text>
+                    </svg>
+                </div>
+                <div class="form-group">
+                    <label for="Character">Select Hero:</label>
+                    <select id="Character" name="Character" required>
+                        <option value="" disabled selected>Select Super Hero</option>
+                        <option value="Iron Man">🚀 Iron Man</option>
+                        <option value="Batman">🦇 Batman</option>
+                        <option value="Flash">⚡ Flash</option>
+                        <option value="Thor">🔨 Thor</option>
+                        <option value="Superman">🦸‍♂️ Superman</option>
+                        <option value="Wonder Woman">🦸‍♀️ Wonder Woman</option>
+                        <option value="Captain America">🛡️ Captain America</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Universe">Universe:</label>
+                    <select id="Universe" name="Universe" required>
+                        <option value="" disabled selected>Select Universe</option>
+                        <option value="Marvel">🌟 Marvel</option>
+                        <option value="DC Comics">💥 DC Comics</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Strength">Strength:</label>
+                    <select id="Strength" name="Strength" required>
+                        <option value="" disabled selected>Select Strength</option>
+                        {% for i in range(1, 11) %}
+                        <option value="{{ i }}">💪 {{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Speed">Speed:</label>
+                    <select id="Speed" name="Speed" required>
+                        <option value="" disabled selected>Select Speed</option>
+                        {% for i in range(1, 11) %}
+                        <option value="{{ i }}">🏃 {{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Intelligence">Intelligence:</label>
+                    <select id="Intelligence" name="Intelligence" required>
+                        <option value="" disabled selected>Select Intelligence</option>
+                        {% for i in range(1, 11) %}
+                        <option value="{{ i }}">💀 {{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="SpecialAbilities">Special Abilities:</label>
+                    <select id="SpecialAbilities" name="SpecialAbilities" required>
+                        <option value="" disabled selected>Select Special Abilities</option>
+                        <option value="Telekinesis">🧠 Telekinesis</option>
+                        <option value="Invisibility">👻 Invisibility</option>
+                        <option value="Super Strength">💪 Super Strength</option>
+                        <option value="Flight">✈️ Flight</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Weaknesses">Weaknesses:</label>
+                    <select id="Weaknesses" name="Weaknesses" required>
+                        <option value="" disabled selected>Select Weakness</option>
+                        <option value="Kryptonite">☢️ Kryptonite</option>
+                        <option value="Magic">🔮 Magic</option>
+                        <option value="Silver">🥈 Silver</option>
+                        <option value="Wooden Stake">🪓 Wooden Stake</option>
+                    </select>
+                </div>
+                <button type="submit">⚔️ Initiate Epic Battle</button>
+            </form>
+        </div>
+        <div class="card">
+            <div id="prediction-text">
+                {% if prediction_text %}
+                {{ prediction_text }}
+                {% else %}
+                Awaiting battle...
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <button class="theme-toggle" id="theme-toggle">🌓</button>
+    <script>
+        const heroAvatar = document.getElementById('hero-avatar');
+        const themeToggle = document.getElementById('theme-toggle');
+
+        // Update hero avatar based on selection
+        const characterSelect = document.getElementById('Character');
+        characterSelect.addEventListener('change', (e) => {
+            const selectedHero = e.target.value;
+            const avatarSvg = heroAvatar.querySelector('svg');
+            const heroIcon = selectedHero.split(' ')[0];
+            avatarSvg.innerHTML = `
+                <circle cx="50" cy="50" r="50" fill="var(--primary)" />
+                <text x="50" y="60" font-family="Poppins" font-size="40" fill="var(--background)" text-anchor="middle">${heroIcon}</text>
+            `;
+        });
+
+        // Theme toggle functionality
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+        });
+
+        // Add parallax effect to parallel lines
+        document.addEventListener('mousemove', (e) => {
+            const lines = document.querySelectorAll('.parallel-line');
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            lines.forEach((line, index) => {
+                const speed = (index + 1) * 0.5;
+                const x = (window.innerWidth - mouseX * speed) / 100;
+                const y = (window.innerHeight - mouseY * speed) / 100;
+                
+                line.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
