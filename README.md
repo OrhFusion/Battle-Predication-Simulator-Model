@@ -1,3 +1,5 @@
+![Battle Form.png](https://github.com/OrhFusion/Battle-Predication-Simulator-Model/blob/model/Battle%20Predication.png)
+
 Detailed description for the Battle Outcome Prediction Model:
 
 ---
