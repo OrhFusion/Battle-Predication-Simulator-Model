@@ -1,9 +1,5 @@
 ![Battle Form.png](https://github.com/OrhFusion/Battle-Predication-Simulator-Model/blob/model/Battle%20Predication.png)
 
-Detailed description for the Battle Outcome Prediction Model:
-
----
-
 ## Battle Outcome Prediction Simulator
 
 This repository presents an advanced machine learning model designed to predict the outcomes of battles based on a hero's attributes such as powers, abilities, intelligence, and strength. Utilizing sophisticated modeling techniques, this simulator offers a powerful tool for forecasting battle results with high accuracy.
